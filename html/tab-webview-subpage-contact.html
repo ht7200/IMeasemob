@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<style>
+			html,
+			body {
+				background-color: #efeff4;
+			}
+			
+			.oa-contact-cell.mui-table .mui-table-cell {
+				padding: 11px 0;
+				vertical-align: middle;
+			}
+			
+			.oa-contact-cell {
+				position: relative;
+				margin: -11px 0;
+			}
+			
+			.oa-contact-avatar {
+				width: 75px;
+			}
+			
+			.oa-contact-avatar img {
+				border-radius: 50%;
+			}
+			
+			.oa-contact-content {
+				width: 100%;
+			}
+			
+			.oa-contact-name {
+				margin-right: 20px;
+			}
+			
+			.oa-contact-name,
+			oa-contact-position {
+				float: left;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="mui-content">
+			<ul class="mui-table-view mui-table-view-striped mui-table-view-condensed" id="contact-list">
+
+			</ul>
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script src="../sdk/dist/strophe.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../sdk/dist/websdk-1.1.2.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../sdk/dist/websdk.shim.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/webim.config.js" type="text/javascript" charset="utf-8"></script>
+	<script>
+		mui.init({
+			swipeBack: true //启用右滑关闭功能
+
+		});
+
+		//创建连接
+		var conn = new WebIM.connection({
+			https: WebIM.config.https,
+			url: WebIM.config.xmppURL,
+			isAutoLogin: WebIM.config.isAutoLogin,
+			isMultiLoginSessions: WebIM.config.isMultiLoginSessions
+		});
+
+		// 初始化连接
+		conn.init({
+			onOpened: function() {
+				// mui.toast("成功登录");
+				conn.setPresence(); //设置在线状态
+				conn.getRoster({
+					success: function(roster) {
+						console.log(JSON.stringify(roster))
+							// 获取当前登录人的好友列表
+						for(var i in roster) {
+							var ros = roster[i]; //好友的对象
+							//ros.name为好友名称
+							addContact(ros.name);
+						}
+					}
+				});
+			}
+		});
+
+		var username = window.localStorage['username'];
+		var password = window.localStorage['password'];
+		console.log("username:" + username + "password:" + password);
+		// 打开连接
+		conn.open({
+			apiUrl: WebIM.config.apiURL,
+			user: username,
+			pwd: password,
+			appKey: WebIM.config.appkey
+		});
+
+		function addContact(name) {
+			var liHTML = document.getElementById('contact-list').innerHTML
+			liHTML += "<li class='mui-table-view-cell' onclick='openChat("+name+")'>" +
+				"<div class='mui-slider-cell'>" +
+				"<div class='oa-contact-cell mui-table'>" +
+				"<div class='oa-contact-avatar mui-table-cell'>" +
+				"<img src='../images/60x60.gif '/>" +
+				"</div>" +
+				"<div class='oa-contact-content mui-table-cell'>" +
+				"<div class='mui-clearfix'>" +
+				"<h4 class='oa-contact-name'  id='contact-name'>" + name + "</h4>" +
+				"<span class='oa-contact-position mui-h6'>好友</span>" +
+				"</div>" +
+				"<p class='oa-contact-email mui-h6'>" +
+				"感觉自己萌萌哒" +
+				"</p>" +
+				"</div>" +
+				"</div>" +
+				"</div>" +
+				"</li>";
+			document.getElementById('contact-list').innerHTML = liHTML;
+		}
+		
+		function openChat(name){
+			window.localStorage['toName'] = name;
+			mui.openWindow({
+				url: 'im-chat.html',
+				id: 'im-chat',
+				preload: true,
+				show: {
+					aniShow: 'pop-in'
+				},
+				styles: {
+					popGesture: 'hide'
+				},
+				waiting: {
+					autoShow: false
+				},
+				createNew:true
+			});
+		}
+
+		window.addEventListener('addContactId', function(event) {
+			//获得事件参数
+			//var id = event.detail.id;
+			var btnArray = ['取消', '确定'];
+			mui.prompt('请输入好友名称：', '', '添加好友', btnArray, function(e) {
+				if(e.index == 1) {
+					//确定
+					conn.subscribe({
+						to: e.value,
+						message: "加个好友呗"
+					});
+					addContact(e.value);
+				} else {
+					//取消
+				}
+			})
+		});
+	</script>
+
+</html>

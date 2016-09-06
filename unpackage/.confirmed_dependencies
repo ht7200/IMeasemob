@@ -1,0 +1,80 @@
+{
+	"index.html": {
+		"resources": [
+			"js/mui.min.js",
+			"css/mui.min.css"
+		],
+		"refer": []
+	},
+	"login.html": {
+		"resources": [
+			"js/webim.config.js",
+			"js/mui.min.js",
+			"sdk/dist/strophe.js",
+			"css/mui.min.css",
+			"sdk/dist/websdk-1.1.2.js",
+			"sdk/dist/websdk.shim.js",
+			"fonts/mui.ttf"
+		],
+		"refer": [
+			"html/tab-webview-main.html"
+		]
+	},
+	"html/tab-webview-main.html": {
+		"resources": [
+			"fonts/mui.ttf",
+			"html/tab-webview-subpage-about.html",
+			"js/mui.min.js",
+			"css/mui.min.css"
+		],
+		"refer": [
+			"html/tab-webview-subpage-setting.html",
+			"html/tab-webview-subpage-chat.html",
+			"html/tab-webview-subpage-contact.html",
+			"html/tab-webview-subpage-about.html"
+		]
+	},
+	"html/tab-webview-subpage-contact.html": {
+		"resources": [
+			"images/60x60.gif",
+			"js/webim.config.js",
+			"js/mui.min.js",
+			"sdk/dist/strophe.js",
+			"css/mui.min.css",
+			"sdk/dist/websdk-1.1.2.js",
+			"sdk/dist/websdk.shim.js"
+		],
+		"refer": [
+			"html/im-chat.html"
+		]
+	},
+	"html/tab-webview-subpage-chat.html": {
+		"resources": [
+			"images/60x60.gif",
+			"images/shuijiao.jpg",
+			"js/webim.config.js",
+			"sdk/dist/strophe.js",
+			"sdk/dist/websdk-1.1.2.js",
+			"sdk/dist/websdk.shim.js"
+		]
+	},
+	"html/tab-webview-subpage-setting.html": {
+		"resources": [
+			"fonts/mui.ttf",
+			"js/mui.min.js",
+			"css/mui.min.css"
+		]
+	},
+	"html/im-chat.html": {
+		"resources": [
+			"js/webim.config.js",
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"images/60x60.gif",
+			"sdk/dist/strophe.js",
+			"css/mui.min.css",
+			"sdk/dist/websdk-1.1.2.js",
+			"sdk/dist/websdk.shim.js"
+		]
+	}
+}

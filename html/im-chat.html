@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<style>
+			.chat-history-date {
+				display: block;
+				padding-top: 5px;
+				text-align: center;
+				font-size: 12px;
+			}
+			
+			.chat-receiver,
+			.chat-sender {
+				margin: 5px;
+				clear: both;
+			}
+			
+			.chat-avatar img {
+				width: 40px;
+				height: 40px;
+				border-radius: 50%;
+			}
+			
+			.chat-receiver .chat-avatar {
+				float: left;
+			}
+			
+			.chat-sender .chat-avatar {
+				float: right;
+			}
+			
+			.chat-content {
+				position: relative;
+				max-width: 60%;
+				min-height: 20px;
+				margin: 0 10px 10px 10px;
+				padding: 10px;
+				font-size: 15px;
+				border-radius: 7px;
+			}
+			
+			.chat-content img {
+				width: 100%;
+			}
+			
+			.chat-receiver .chat-content {
+				float: left;
+				color: #383838;
+				background-color: #f5f5f5;
+			}
+			
+			.chat-sender .chat-content {
+				float: right;
+				color: #ffffff;
+				background-color: #15b5e9;
+			}
+			
+			.chat-triangle {
+				position: absolute;
+				top: 6px;
+				width: 0px;
+				height: 0px;
+				border-width: 8px;
+				border-style: solid;
+			}
+			
+			.chat-receiver .chat-triangle {
+				left: -16px;
+				border-color: transparent #f5f5f5 transparent transparent;
+			}
+			
+			.chat-sender .chat-triangle {
+				right: -16px;
+				border-color: transparent transparent transparent #15b5e9;
+			}
+			
+			footer {
+				position: fixed;
+				width: 100%;
+				height: 50px;
+				min-height: 50px;
+				border-top: solid 1px #bbb;
+				left: 0px;
+				bottom: 0px;
+				overflow: hidden;
+				padding: 0px 50px;
+				background-color: #fafafa;
+			}
+			
+			.footer-left {
+				position: absolute;
+				width: 50px;
+				height: 50px;
+				left: 0px;
+				bottom: 0px;
+				text-align: center;
+				vertical-align: middle;
+				line-height: 100%;
+				padding: 12px 4px;
+			}
+			
+			.footer-right {
+				position: absolute;
+				width: 50px;
+				height: 50px;
+				right: 0px;
+				bottom: 0px;
+				text-align: center;
+				vertical-align: middle;
+				line-height: 100%;
+				padding: 12px 5px;
+				display: inline-block;
+			}
+			
+			.footer-center {
+				height: 100%;
+				padding: 5px 0px;
+			}
+			
+			.footer-center [class*=input] {
+				width: 100%;
+				height: 100%;
+				border-radius: 5px;
+			}
+			
+			.footer-center .input-text {
+				background: #fff;
+				border: solid 1px #ddd;
+				padding: 10px !important;
+				font-size: 16px !important;
+				line-height: 18px !important;
+				font-family: verdana !important;
+				overflow: hidden;
+			}
+			
+			footer .mui-icon {
+				color: #000;
+			}
+			
+			footer .mui-icon:active {
+				color: #007AFF !important;
+			}
+			
+			.footer-right span {
+				color: #0062CC;
+				line-height: 30px;
+			}
+			
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 id="title" class="mui-title">正在连接...</h1>
+		</header>
+		<div id="pullrefresh" class="mui-content">
+			<!--消息最后历史时间--> <!--暂未启用-->
+			<p class="chat-history-date">01:59</p>
+			<!--接收文本消息-->
+			<div id="message-area">
+				<div class="chat-receiver">
+					<div class="chat-avatar">
+						<img src="../images/60x60.gif">
+					</div>
+					<div class="chat-content">
+						<div class="chat-triangle"></div>
+						<span>如果是接受消息，请使用.chat-receiver类，如果是发送消息，请使用.chat-sender，头像是.chat-avatar类，内容是.chat-content类。.chat-content下如果是span标签则为文本消息，若为img标签则为图片消息。</span>
+					</div>
+				</div>
+				<!--发送文本消息-->
+				<div class="chat-sender">
+					<div class="chat-avatar">
+						<img src="../images/60x60.gif">
+					</div>
+					<div class="chat-content">
+						<div class="chat-triangle"></div>
+						<span>如果你要修改聊天气泡的背景颜色，请修改.chat-content的background-color和.chat-triangle的border-color</span>
+					</div>
+				</div>
+				<!--发送图片消息-->
+				<!--<div class="chat-sender">
+					<div class="chat-avatar">
+						<img src="../images/60x60.gif">
+					</div>
+					<div class="chat-content">
+						<div class="chat-triangle"></div>
+						<img src="../images/shuijiao.jpg">
+					</div>
+				</div>-->
+			</div>
+
+			<footer>
+				<div class="footer-left">
+					<i id='msg-choose-img' class="mui-icon mui-icon-camera" style="font-size: 28px;"></i>
+				</div>
+				<div class="footer-center">
+					<textarea id='msg-text' type="text" class='input-text'></textarea>
+				</div>
+				<div class="footer-right">
+					<span id='msg-send-text'>发送</span>
+				</div>
+			</footer>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../sdk/dist/strophe.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../sdk/dist/websdk-1.1.2.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../sdk/dist/websdk.shim.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/webim.config.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+			mui.init({
+				swipeBack: false,
+				/*pullRefresh: {
+					container: '#pullrefresh',
+					down: {
+						callback: pulldownRefresh
+					}
+				}*/
+			});
+			/**
+			 * 下拉刷新具体业务实现
+			 */
+			/*function pulldownRefresh() {
+				setTimeout(function() {
+					//下拉刷新具体业务
+					mui('#pullrefresh').pullRefresh().endPulldownToRefresh(); //refresh completed
+				}, 1000);
+			}*/
+
+			//创建连接
+			var conn = new WebIM.connection({
+				https: WebIM.config.https,
+				url: WebIM.config.xmppURL,
+				isAutoLogin: WebIM.config.isAutoLogin,
+				isMultiLoginSessions: WebIM.config.isMultiLoginSessions
+			});
+
+			conn.listen({
+				onOpened: function(message) { //连接成功回调
+					//如果isAutoLogin设置为false，那么必须手动设置上线，否则无法收消息
+					conn.setPresence();
+				},
+				onClosed: function(message) {}, //连接关闭回调
+				onTextMessage: function(message) { //收到文本消息
+					handleTextMessage(message);
+				},
+				onEmojiMessage: function(message) {}, //收到表情消息
+				onPictureMessage: function(message) {}, //收到图片消息
+				onCmdMessage: function(message) {}, //收到命令消息
+				onAudioMessage: function(message) {}, //收到音频消息
+				onLocationMessage: function(message) {}, //收到位置消息
+				onFileMessage: function(message) {}, //收到文件消息
+				onVideoMessage: function(message) {}, //收到视频消息
+				onPresence: function(message) { //收到联系人订阅请求、处理群组、聊天室被踢解散等消息
+					handlePresence(message);
+				},
+				onRoster: function(message) {}, //处理好友申请
+				onInviteMessage: function(message) {}, //处理群组邀请
+				onOnline: function() {}, //本机网络连接成功
+				onOffline: function() {}, //本机网络掉线
+				onError: function(message) {} //失败回调
+			});
+
+			// 打开连接
+			var username = window.localStorage['username'];
+			var password = window.localStorage['password'];
+			//console.log("username:" + username + "password:" + password);
+			conn.open({
+				apiUrl: WebIM.config.apiURL,
+				user: username,
+				pwd: password,
+				appKey: WebIM.config.appkey
+			});
+			document.getElementById('title').innerText = window.localStorage['toName'];
+
+			//发送文字消息
+			var id = conn.getUniqueId(); //生成本地消息id
+			var msg = new WebIM.message('txt', id); //创建文本消息
+
+			var sendBtn = document.getElementById('msg-send-text');
+			sendBtn.addEventListener('tap', function() {
+				var message = document.getElementById('msg-text').value;
+				var toName = window.localStorage['toName'];
+				if(message != '') {
+					msg.set({
+						msg: message,
+						to: toName,
+						success: function(id, serverMsgId) {
+								renderTextMessage(message, 'chat-sender');
+
+							} //消息发送成功回调
+					});
+					conn.send(msg.body);
+					setTimeout(function() {
+						document.getElementById('msg-text').value = '';
+						document.getElementById('msg-text').blur();
+					}, 500);
+				}
+			})
+
+			//接收文字消息
+			function handleTextMessage(message) {
+				console.log(JSON.stringify(message));
+				var from = message.from; //消息的发送者
+				var msg = message.data; //文本消息体    
+				// 收到文本消息在页面展示
+				renderTextMessage(msg, 'chat-receiver');
+			}
+
+			//渲染
+			function renderTextMessage(message, type) {
+				var textHTML = "<div class=''>" +
+					"<div class='chat-avatar'>" +
+					"<img src='../images/60x60.gif'>" +
+					"</div>" +
+					"<div class='chat-content'>" +
+					"<div class='chat-triangle'></div>" +
+					"<span>" + message + "</span>" +
+					"</div>" +
+					"</div>";
+				var para = document.createElement("div");
+				var node = document.createTextNode('');
+				para.appendChild(node);
+				para.setAttribute('class', type);
+				para.innerHTML = textHTML;
+				var messageArea = document.getElementById("message-area");
+				var chatContent
+				messageArea.appendChild(para);
+				//聊天内容显示最后
+				var hPara =  para.getElementsByClassName('chat-content')[0].offsetHeight;
+				document.body.style.paddingBottom = hPara + 60 + 'px';
+				document.body.scrollTop = document.body.scrollHeight;
+				
+			}
+		</script>
+	</body>
+
+</html>
